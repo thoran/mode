@@ -1,0 +1,42 @@
+# mode/CHANGELOG
+
+20260316
+0.4.0
+
+Summary: + --help
+1. + usage()
+2. + show_usage?()
+3. ~ main(): Add check for no arguments or -h/--help.
+4. + README.md
+5. + CHANGELOG
+
+20260316
+0.3.0
+
+Summary: Use Reline for line editing and history.
+1. + require 'reline'
+2. ~ main(): Assign input with Reline instead of $stdin.
+
+
+20260120
+0.2.0
+
+Summary: Add abbreviated exit commands.
+1. + require 'abbrev'
+2. + EXIT_COMMANDS constant via Abbrev
+3. ~ main(): Use EXIT_COMMANDS splat instead of literal 'exit', 'quit'.
+
+
+20260119
+0.1.0
+
+Summary: Generalise from git to any command.
+1. + command_context()
+2. ~ main(): Replace hardcoded 'git' with command_context.
+
+
+20260119
+0.0.0
+
+Summary: Initial version for git only.
+1. + main()

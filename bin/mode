@@ -2,36 +2,68 @@
 # mode
 
 # 20260316
-# 0.3.0
+# 0.4.0
 
 # Description: Create a modeful context within which to run sub-commands.
-
-# Changes since 0.2:
-# -/0: Use Reline for line editing and history.
-# 1. + require 'reline'
-# 2. ~ main(): Assign input with $stdin instead of Reline.
 
 require 'abbrev'
 require 'reline'
 
 EXIT_COMMANDS = Abbrev.abbrev(['exit', 'quit'])
 
+def usage
+  puts "mode - Create a modeful context within which to run sub-commands."
+  puts
+  puts "Usage: mode <command>"
+  puts
+  puts "Notes:"
+  puts "1. `mode` assumes commands accept sub-commands as arguments."
+  puts "2. Input is prefixed with the <command> context and passed to the shell."
+  puts
+  puts "Examples:"
+  puts "  mode git"
+  puts "  git> status         # Runs: git status"
+  puts
+  puts "  mode brew"
+  puts "  brew> list mode     # Runs: brew list mode"
+  puts
+  puts "  mode gem"
+  puts "  gem> search reline  # Runs: gem search reline"
+  puts
+  puts "  mode docker"
+  puts "  docker> ps -a       # Runs: docker ps -a"
+  puts
+  puts "  mode kubectl"
+  puts "  kubectl> get pods   # Runs: kubectl get pods"
+  puts
+  puts "Exit with: exit, quit, or Ctrl-D"
+end
+
 def command_context
   ARGV[0]
 end
 
+def show_usage?
+  ARGV.empty? ||
+    ARGV[0] == '-h' ||
+    ARGV[0] == '--help'
+end
+
 def main
+  if show_usage?
+    usage
+    exit ARGV.empty? ? 1 : 0
+  end
   prompt = "#{command_context}> "
   loop do
     input = Reline.readline(prompt, true)
-    break unless input  # Handle Ctrl-D
+    break unless input # Handle Ctrl-D
     input.strip!
     case input
     when *EXIT_COMMANDS.keys; break
     when ''
     else
-      cmd = "#{command_context} #{input}"
-      system(cmd)
+      system("#{command_context} #{input}")
     end
   end
 end
