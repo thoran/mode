@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+# mode
+
+# 20260119
+# 0.0.0
+
+# Description: Create a modeful context within which to run sub-commands.
+
+def main
+  prompt = "git> "
+  loop do
+    print prompt
+    input = $stdin.gets&.chomp
+    break unless input  # Handle Ctrl-D
+    case input
+    when 'exit', 'quit'; break
+    when ''
+    else
+      cmd = "git #{input}"
+      system(cmd)
+    end
+  end
+end
+
+main
