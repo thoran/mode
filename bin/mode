@@ -2,12 +2,16 @@
 # mode
 
 # 20260119
-# 0.0.0
+# 0.1.0
 
 # Description: Create a modeful context within which to run sub-commands.
 
+def command_context
+  ARGV[0]
+end
+
 def main
-  prompt = "git> "
+  prompt = "#{command_context}> "
   loop do
     print prompt
     input = $stdin.gets&.chomp
@@ -16,7 +20,7 @@ def main
     when 'exit', 'quit'; break
     when ''
     else
-      cmd = "git #{input}"
+      cmd = "#{command_context} #{input}"
       system(cmd)
     end
   end
