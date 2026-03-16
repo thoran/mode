@@ -1,12 +1,18 @@
 #!/usr/bin/env ruby
 # mode
 
-# 20260120
-# 0.2.0
+# 20260316
+# 0.3.0
 
 # Description: Create a modeful context within which to run sub-commands.
 
+# Changes since 0.2:
+# -/0: Use Reline for line editing and history.
+# 1. + require 'reline'
+# 2. ~ main(): Assign input with $stdin instead of Reline.
+
 require 'abbrev'
+require 'reline'
 
 EXIT_COMMANDS = Abbrev.abbrev(['exit', 'quit'])
 
@@ -17,9 +23,9 @@ end
 def main
   prompt = "#{command_context}> "
   loop do
-    print prompt
-    input = $stdin.gets&.chomp
+    input = Reline.readline(prompt, true)
     break unless input  # Handle Ctrl-D
+    input.strip!
     case input
     when *EXIT_COMMANDS.keys; break
     when ''
