@@ -1,10 +1,14 @@
 #!/usr/bin/env ruby
 # mode
 
-# 20260119
-# 0.1.0
+# 20260120
+# 0.2.0
 
 # Description: Create a modeful context within which to run sub-commands.
+
+require 'abbrev'
+
+EXIT_COMMANDS = Abbrev.abbrev(['exit', 'quit'])
 
 def command_context
   ARGV[0]
@@ -17,7 +21,7 @@ def main
     input = $stdin.gets&.chomp
     break unless input  # Handle Ctrl-D
     case input
-    when 'exit', 'quit'; break
+    when *EXIT_COMMANDS.keys; break
     when ''
     else
       cmd = "#{command_context} #{input}"
